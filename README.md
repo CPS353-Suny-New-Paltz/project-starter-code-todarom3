@@ -11,6 +11,4 @@ Prime numbers ≤ 30:
 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
 Total primes found: 10
 
-Image of API Design: ![<Alt text for image>](https://github.com/<repo
-owner username>/<repo name>/blob/main/<path to image
-file>/<name of image file>?raw=true)
+Image of API Design: ![<API Design>](https://github.com/<todarom3>/<project-starter-code-todarom3>/blob/main/<"C:\Users\todma\Pictures\IMG_1105.jpg">/<IMG_1105>?raw=true)
