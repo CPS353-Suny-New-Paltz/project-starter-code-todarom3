@@ -1,4 +1,4 @@
-package networkAPI;
+package networkapi;
 
 public class UserResponse {
     private String message;
