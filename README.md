@@ -1,3 +1,12 @@
-# Software Engineering Project Starter Code
+The system will compute the number of prime numbers less than or equal to the input number.
 
-This repo will start you off with an initial configuration that you'll modify as part of Checkpoint 1. As part of the modifications, you'll eventually delete the contents of this README and replace it with documentation for your project.
+Example - 
+Input: 
+N = 30
+
+Output:
+Prime numbers ≤ 30:
+2, 3, 5, 7, 11, 13, 17, 19, 23, 29
+Total primes found: 10
+
+Image of API Design: ![API_Design](https://github.com/CPS353-Suny-New-Paltz/project-starter-code-todarom3/blob/main/src/project/annotations/API_Design.jpg?raw=true)
