@@ -3,12 +3,12 @@ package processapi;
 import project.annotations.ProcessAPI;
 
 @ProcessAPI
-public class DataStorageAPI {
+public interface DataStorageAPI {
 
-    public DataResponse readInput(DataRequest request) {
+    public static DataResponse readInput(DataRequest request) {
     	return null;
     }
 
-    public void writeOutput(DataResponse response) {
+    public static void writeOutput(DataResponse response) {
     }
 }
