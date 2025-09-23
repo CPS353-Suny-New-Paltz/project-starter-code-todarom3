@@ -2,12 +2,13 @@ package networkapi;
 
 import project.annotations.NetworkAPIPrototype;
 
-public class UserComputeAPIImpl implements UserComputeAPI {
+public class UserComputeAPIImpl {
 
-    @Override
     @NetworkAPIPrototype
     public UserResponse processUserRequest(UserRequest request) {
-        // Prototype - just return a dummy message
-        return new UserResponse("Processing request from source: " + request.getInputSource());
+        // Prototype logic - just return a dummy response
+        return new UserResponse(
+            "Processing request from source: " + request.getInputSource()
+        );
     }
 }
