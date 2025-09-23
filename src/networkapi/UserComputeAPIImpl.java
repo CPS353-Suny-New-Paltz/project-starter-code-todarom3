@@ -5,10 +5,12 @@ import project.annotations.NetworkAPIPrototype;
 public class UserComputeAPIImpl {
 
     @NetworkAPIPrototype
-    public UserResponse processUserRequest(UserRequest request) {
-        // Prototype logic - just return a dummy response
-        return new UserResponse(
-            "Processing request from source: " + request.getInputSource()
-        );
+    public void prototype(UserComputeAPI api) {
+
+    	UserRequest dummyRequest = new UserRequest("input.txt", "output.txt", ",");
+
+        UserResponse response = api.processUserRequest(dummyRequest);
+
+        System.out.println("Prototype response: " + (response != null ? response.getMessage() : "null"));
     }
 }

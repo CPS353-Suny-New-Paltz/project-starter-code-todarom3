@@ -1,21 +1,15 @@
 package processapi;
 
-import java.util.Arrays;
-import java.util.List;
 import project.annotations.ProcessAPIPrototype;
 
 public class DataStorageAPIImpl {
 
     @ProcessAPIPrototype
-    public DataResponse readInput(DataRequest request) {
+    public void runPrototype(DataStorageAPI api) {
 
-    	List<Integer> dummyData = Arrays.asList(2, 3, 4, 5, 6, 7, 8, 9, 10);
-        return new DataResponse(dummyData);
-    }
+    	DataRequest request = new DataRequest("dummy-source");
+        DataResponse response = api.readInput(request);
 
-    @ProcessAPIPrototype
-    public void writeOutput(DataResponse response) {
-
-    	System.out.println("Writing output: " + response.getData());
+        api.writeOutput(response);
     }
 }

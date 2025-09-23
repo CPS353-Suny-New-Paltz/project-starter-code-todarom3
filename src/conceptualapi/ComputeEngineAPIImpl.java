@@ -1,15 +1,22 @@
 package conceptualapi;
 
-import java.util.ArrayList;
 import java.util.List;
 import project.annotations.ConceptualAPIPrototype;
 
 public class ComputeEngineAPIImpl {
 
     @ConceptualAPIPrototype
-    public ComputeResult computePrimes(ComputeRequest request) {
-        // Prototype version: return an empty list of primes
-        List<Integer> emptyPrimes = new ArrayList<>();
-        return new ComputeResult(emptyPrimes, 0);
+    public void prototype(ComputeEngineAPI api) {
+
+    	ComputeRequest dummyRequest = new ComputeRequest(10); // compute primes up to 10
+
+        ComputeResult result = api.computePrimes(dummyRequest);
+
+        if (result != null) {
+            List<Integer> primes = result.getPrimes();
+            System.out.println("Prototype computed " + result.getTotalCount() + " primes: " + primes);
+        } else {
+            System.out.println("Prototype received a null result.");
+        }
     }
 }
