@@ -30,6 +30,10 @@ test {
     useJUnitPlatform()
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+    exclude '**/UnfinishedTest.class'
+>>>>>>> Stashed changes
 =======
     exclude '**/UnfinishedTest.class'
 >>>>>>> Stashed changes
