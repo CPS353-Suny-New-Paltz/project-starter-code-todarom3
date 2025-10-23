@@ -1,8 +1,5 @@
 package processapi;
 
-import processapi.DataRequest;
-import processapi.DataResponse;
-import processapi.DataStorageAPI;
 import java.util.Collections;
 
 public class DataStorageAPIImpl implements DataStorageAPI {

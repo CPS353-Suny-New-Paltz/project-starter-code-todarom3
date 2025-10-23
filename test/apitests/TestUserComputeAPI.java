@@ -1,7 +1,9 @@
-package networkapi;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import networkapi.UserComputeAPIImpl;
+import networkapi.UserRequest;
+import networkapi.UserResponse;
 import conceptualapi.ComputeEngineAPI;
 
 public class TestUserComputeAPI {

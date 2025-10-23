@@ -1,6 +1,8 @@
-package processapi;
-
 import org.junit.jupiter.api.Test;
+
+import processapi.DataStorageAPIImpl;
+import processapi.DataRequest;
+import processapi.DataResponse;
 
 public class TestDataStorageAPI {
 
