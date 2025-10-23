@@ -1,22 +1,19 @@
 package conceptualapi;
 
-import java.util.List;
-import project.annotations.ConceptualAPIPrototype;
+import java.util.Collections;
 
-public class ComputeEngineAPIImpl {
+public class ComputeEngineAPIImpl implements ComputeEngineAPI {
 
-    @ConceptualAPIPrototype
-    public void prototype(ComputeEngineAPI api) {
+    // Might depend on DataStorageAPI (from processapi)
+    private processapi.DataStorageAPI dataStorageAPI;
 
-    	ComputeRequest dummyRequest = new ComputeRequest(10); // compute primes up to 10
+    public ComputeEngineAPIImpl(processapi.DataStorageAPI dataStorageAPI) {
+        this.dataStorageAPI = dataStorageAPI;
+    }
 
-        ComputeResult result = api.computePrimes(dummyRequest);
-
-        if (result != null) {
-            List<Integer> primes = result.getPrimes();
-            System.out.println("Prototype computed " + result.getTotalCount() + " primes: " + primes);
-        } else {
-            System.out.println("Prototype received a null result.");
-        }
+    @Override
+    public ComputeResult computePrimes(ComputeRequest request) {
+        // Return an empty result for now
+        return new ComputeResult(Collections.emptyList(), 0);
     }
 }
