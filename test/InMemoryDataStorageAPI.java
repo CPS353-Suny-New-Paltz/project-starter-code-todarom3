@@ -8,7 +8,7 @@ public class InMemoryDataStorageAPI implements DataStorageAPI {
     private InMemoryInput input;
     private InMemoryOutput output;
 
-    public InMemoryDataStorageAPI(InMemoryInput input, InMemoryOutputConfig output) {
+    public InMemoryDataStorageAPI(InMemoryInput input, InMemoryOutput output) {
         this.input = input;
         this.output = output;
     }

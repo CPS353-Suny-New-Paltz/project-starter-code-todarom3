@@ -1,7 +1,9 @@
 import java.util.List;
 
 public class InMemoryInput {
-
+	
+	 private List<Integer> inputData;
+	 
     public InMemoryInput(List<Integer> inputData) {
         this.inputData = inputData;
     }
