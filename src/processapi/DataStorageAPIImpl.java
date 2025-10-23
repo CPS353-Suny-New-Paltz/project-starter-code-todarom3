@@ -1,15 +1,18 @@
 package processapi;
 
-import project.annotations.ProcessAPIPrototype;
+import java.util.Collections;
 
-public class DataStorageAPIImpl {
+public class DataStorageAPIImpl implements DataStorageAPI {
 
-    @ProcessAPIPrototype
-    public void runPrototype(DataStorageAPI api) {
+    @Override
+    public DataResponse readInput(DataRequest request) {
+        // Return an empty response for now
+        return new DataResponse(Collections.emptyList());
+    }
 
-    	DataRequest request = new DataRequest("dummy-source");
-        DataResponse response = api.readInput(request);
-
-        api.writeOutput(response);
+    @Override
+    public void writeOutput(DataResponse response) {
+        // Do nothing yet
+        System.out.println("Output not yet written.");
     }
 }
