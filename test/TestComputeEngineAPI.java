@@ -1,3 +1,8 @@
+import conceptualapi.ComputeEngineAPIImpl;
+import conceptualapi.ComputeRequest;
+import conceptualapi.ComputeResult;
+import processapi.DataStorageAPI;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import processapi.DataStorageAPI;

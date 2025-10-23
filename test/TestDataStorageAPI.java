@@ -1,3 +1,7 @@
+import processapi.DataStorageAPIImpl;
+import processapi.DataRequest;
+import processapi.DataResponse;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
