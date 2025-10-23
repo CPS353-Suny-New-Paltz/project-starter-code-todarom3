@@ -1,5 +1,8 @@
 package networkapi;
 
+import networkapi.UserComputeAPI;
+import networkapi.UserRequest;
+import networkapi.UserResponse;
 import conceptualapi.ComputeEngineAPI;
 
 public class UserComputeAPIImpl implements UserComputeAPI {
