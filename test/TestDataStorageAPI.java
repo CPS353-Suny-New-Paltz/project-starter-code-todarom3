@@ -1,6 +1,7 @@
 package processapi;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 public class TestDataStorageAPI {
 
@@ -16,6 +17,6 @@ public class TestDataStorageAPI {
         DataResponse response = dataStorage.readInput(request);
 
         // Smoke check – response should not be null
-        assertNotNull(response, "DataResponse should not be null");
+        Assertions.assertNotNull(response, "DataResponse should not be null");
     }
 }

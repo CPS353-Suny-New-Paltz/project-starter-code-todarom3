@@ -3,6 +3,7 @@ package conceptualapi;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import processapi.DataStorageAPI;
+import org.junit.jupiter.api.Assertions;
 
 public class TestComputeEngineAPI {
 
@@ -21,6 +22,6 @@ public class TestComputeEngineAPI {
         ComputeResult result = computeEngine.computePrimes(request);
 
         // Smoke check – result should not be null
-        assertNotNull(result, "ComputeResult should not be null");
+        Assertions.assertNotNull(result, "ComputeResult should not be null");
     }
 }

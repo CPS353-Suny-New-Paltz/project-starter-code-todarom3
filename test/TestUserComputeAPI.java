@@ -3,6 +3,7 @@ package networkapi;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import conceptualapi.ComputeEngineAPI;
+import org.junit.jupiter.api.Assertions;
 
 public class TestUserComputeAPI {
 
@@ -21,6 +22,6 @@ public class TestUserComputeAPI {
         UserResponse response = userCompute.processUserRequest(request);
 
         // Smoke check – response should not be null
-        assertNotNull(response, "UserResponse should not be null");
+        Assertions.assertNotNull(response, "UserResponse should not be null");
     }
 }
