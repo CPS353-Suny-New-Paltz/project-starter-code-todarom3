@@ -2,18 +2,15 @@ package networkapi;
 
 import conceptualapi.ComputeEngineAPI;
 
-public class UserComputeAPIImpl implements UserComputeAPI {
+public class UserComputeAPIImpl {
 
-    // Dependency on conceptual layer
-    private ComputeEngineAPI computeEngineAPI;
+    @NetworkAPIPrototype
+    public void prototype(UserComputeAPI api) {
 
-    public UserComputeAPIImpl(ComputeEngineAPI computeEngineAPI) {
-        this.computeEngineAPI = computeEngineAPI;
-    }
+    	UserRequest dummyRequest = new UserRequest("input.txt", "output.txt", ",");
 
-    @Override
-    public UserResponse processUserRequest(UserRequest request) {
-        // Just return a default response message for now
-        return new UserResponse("Request not yet processed.");
+        UserResponse response = api.processUserRequest(dummyRequest);
+
+        System.out.println("Prototype response: " + (response != null ? response.getMessage() : "null"));
     }
 }
