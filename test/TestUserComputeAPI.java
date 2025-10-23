@@ -1,11 +1,10 @@
-import userapi.UserComputeAPIImpl;
-import userapi.UserRequest;
-import userapi.UserResponse;
+import networkapi.UserComputeAPIImpl;
+import networkapi.UserRequest;
+import networkapi.UserResponse;
 import conceptualapi.ComputeEngineAPI;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import conceptualapi.ComputeEngineAPI;
 import org.junit.jupiter.api.Assertions;
 
 public class TestUserComputeAPI {

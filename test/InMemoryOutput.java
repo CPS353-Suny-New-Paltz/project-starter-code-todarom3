@@ -13,5 +13,4 @@ public class InMemoryOutput {
     }
 }
 
-
 //This holds the “output” of my test, strings that the system writes instead of writing to a file.
