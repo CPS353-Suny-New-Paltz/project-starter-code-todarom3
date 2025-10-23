@@ -28,5 +28,4 @@ dependencies {
 
 test {
     useJUnitPlatform()
-     exclude '**/UnfinishedTest.class', '**/BrokenTest.class'
 }

@@ -6,18 +6,20 @@ import conceptualapi.ComputeResult;
 import processapi.DataStorageAPI;
 import java.util.Collections;
 
-public class ComputeEngineAPIImpl implements ComputeEngineAPI {
+public class ComputeEngineAPIImpl {
 
-    // Might depend on DataStorageAPI (from processapi)
-    private processapi.DataStorageAPI dataStorageAPI;
+    @ConceptualAPIPrototype
+    public void prototype(ComputeEngineAPI api) {
 
-    public ComputeEngineAPIImpl(processapi.DataStorageAPI dataStorageAPI) {
-        this.dataStorageAPI = dataStorageAPI;
-    }
+    	ComputeRequest dummyRequest = new ComputeRequest(10); // compute primes up to 10
 
-    @Override
-    public ComputeResult computePrimes(ComputeRequest request) {
-        // Return an empty result for now
-        return new ComputeResult(Collections.emptyList(), 0);
+        ComputeResult result = api.computePrimes(dummyRequest);
+
+        if (result != null) {
+            List<Integer> primes = result.getPrimes();
+            System.out.println("Prototype computed " + result.getTotalCount() + " primes: " + primes);
+        } else {
+            System.out.println("Prototype received a null result.");
+        }
     }
 }
