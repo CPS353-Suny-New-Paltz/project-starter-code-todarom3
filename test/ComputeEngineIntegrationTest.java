@@ -44,8 +44,9 @@ public class ComputeEngineIntegrationTest {
         dataStorage.writeOutput(new DataResponse(Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19, 23)));
 
         // Verify output is consistent
-        List<String> output = output.getOutputData();
-        Assertions.assertFalse(output.isEmpty(), "Output list should not be empty");
-        Assertions.assertTrue(output.contains("2"), "Expected primes in output");
+        List<String> outputData = output.getOutputData();
+        Assertions.assertFalse(outputData.isEmpty(), "Output list should not be empty");
+        Assertions.assertTrue(outputData.contains("2"), "Expected primes in output");
+
     }
 }
