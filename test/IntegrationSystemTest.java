@@ -1,11 +1,13 @@
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import networkapi.UserComputeAPIImpl;
 import conceptualapi.ComputeEngineAPIImpl;
-import processapi.InMemoryDataStorageAPI;
-import processapi.InMemoryInput;
-import processapi.InMemoryOutput;
+import processapi.DataRequest;
+import processapi.DataResponse;
+import networkapi.UserRequest;
+import networkapi.UserResponse;
 
 public class IntegrationSystemTest {
 
@@ -19,6 +21,7 @@ public class IntegrationSystemTest {
 
         UserComputeAPIImpl userAPI = new UserComputeAPIImpl(computeEngine);
 
+        DataResponse response = dataStorage.readInput(new DataRequest("dummy"));
         Assertions.assertNotNull(response, "Integration should produce a response");
     }
 }
