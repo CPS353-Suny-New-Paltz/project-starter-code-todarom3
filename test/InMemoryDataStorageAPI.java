@@ -21,14 +21,17 @@ public class InMemoryDataStorageAPI implements DataStorageAPI {
     }
 
     @Override
-    public void writeOutput(DataResponse response) {
-        // Write each integer as a string to the output config
+    public DataResponse writeOutput(DataResponse response) {
+        // Write each integer as a string to the output 
         for (Integer num : response.getData()) {
             output.addOutput(String.valueOf(num));
         }
+
+        // confirm success
+        return response;
     }
 
-    // Optional: for verifying output in tests
+    // Verifying output in tests
     public List<String> getWrittenOutput() {
         return output.getOutputData();
     }
