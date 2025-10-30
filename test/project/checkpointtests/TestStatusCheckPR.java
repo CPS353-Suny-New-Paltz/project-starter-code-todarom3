@@ -1,4 +1,5 @@
-/*
+package project.checkpointtests;
+
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -15,7 +16,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -27,7 +27,7 @@ public class TestStatusCheckPR {
     private static final String SUCCESS = "success";
     private static final String APPROVED = "APPROVED";
     
-    @Test
+    //@Test
     public void testPullRequest() throws Exception {
         String baseApiPath = getBaseApiPath();
         String toCurl = baseApiPath + "pulls?state=all";
@@ -165,4 +165,4 @@ public class TestStatusCheckPR {
     }
 }
 
-*/
+
