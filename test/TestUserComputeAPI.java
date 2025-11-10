@@ -6,9 +6,6 @@ import conceptualapi.ComputeEngineAPI;
 import conceptualapi.ComputeEngineAPIImpl;
 
 import processapi.DataStorageAPI;
-import InMemoryDataStorageAPI;
-import InMemoryInput;
-import InMemoryOutput;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
