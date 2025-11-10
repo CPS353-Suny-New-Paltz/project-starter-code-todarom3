@@ -6,9 +6,9 @@ import conceptualapi.ComputeEngineAPI;
 import conceptualapi.ComputeEngineAPIImpl;
 
 import processapi.DataStorageAPI;
-import processapi.InMemoryDataStorageAPI;
-import processapi.InMemoryInput;
-import processapi.InMemoryOutput;
+import InMemoryDataStorageAPI;
+import InMemoryInput;
+import InMemoryOutput;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
@@ -41,7 +41,7 @@ public class TestUserComputeAPI {
     @Test
     public void testNetworkAPI_withRealDependencies_smoke() {
         // Real conceptual dependency
-        ComputeEngineAPI realEngine = new ComputeEngineAPIImpl(null);
+        ComputeEngineAPI realEngine = new ComputeEngineAPIImpl();
 
         // Test process dependency
         InMemoryInput input = new InMemoryInput(List.of(10));
