@@ -15,7 +15,7 @@ public class IntegrationSystemTest {
     public void testFullSystemIntegration() {
         // Set up storage and compute engine
         DataStorageAPI dataStorage = new DataStorageAPIImpl();
-        ComputeEngineAPI computeEngine = new ComputeEngineAPIImpl(dataStorage);
+        ComputeEngineAPI computeEngine = new ComputeEngineAPIImpl();
 
         // Create UserComputeAPI with both dependencies
         UserComputeAPIImpl userAPI = new UserComputeAPIImpl(computeEngine, dataStorage);

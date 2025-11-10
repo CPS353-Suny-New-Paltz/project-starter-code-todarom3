@@ -18,7 +18,7 @@ public class TestComputeEngineAPI {
         DataStorageAPI mockDataStorage = Mockito.mock(DataStorageAPI.class);
 
         // Create instance under test
-        ComputeEngineAPIImpl computeEngine = new ComputeEngineAPIImpl(mockDataStorage);
+        ComputeEngineAPIImpl computeEngine = new ComputeEngineAPIImpl();
 
         // Input: upper limit = 30
         ComputeRequest request = new ComputeRequest(30);

@@ -26,7 +26,7 @@ public class ComputeEngineIntegrationTest {
         output = new InMemoryOutput();
         dataStorage = new InMemoryDataStorageAPI(input, output);
 
-        computeEngine = new ComputeEngineAPIImpl(dataStorage);
+        computeEngine = new ComputeEngineAPIImpl();
     }
 
     @Test
