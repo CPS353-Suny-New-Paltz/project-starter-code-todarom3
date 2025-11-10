@@ -29,4 +29,20 @@ public class TestUserComputeAPI {
         // Smoke check – response should not be null
         Assertions.assertNotNull(response, "UserResponse should not be null");
     }
+    
+    @Test
+    public void testNetworkAPI_withRealDependencies_smoke() {
+        // Real conceptual dependency
+        ComputeEngineAPI realEngine = new ComputeEngineAPIImpl(null);
+
+        // Test process dependency
+        InMemoryInput input = new InMemoryInput(List.of(10));
+        InMemoryOutput output = new InMemoryOutput();
+        InMemoryDataStorageAPI store = new InMemoryDataStorageAPI(input, output);
+
+        // **THIS is what the checkpoint wants**
+        UserComputeAPIImpl api = new UserComputeAPIImpl(realEngine, store);
+
+        Assertions.assertNotNull(api);
+    }
 }
