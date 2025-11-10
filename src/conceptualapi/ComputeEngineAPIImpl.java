@@ -3,40 +3,23 @@ package conceptualapi;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import processapi.DataStorageAPI;
-import processapi.DataResponse;
 
 public class ComputeEngineAPIImpl implements ComputeEngineAPI {
-    // Dependency on DataStorageAPI
-    private DataStorageAPI dataStorageAPI;
 
-    public ComputeEngineAPIImpl(DataStorageAPI dataStorageAPI) {
-        this.dataStorageAPI = dataStorageAPI;
+    public ComputeEngineAPIImpl() {
     }
 
     @Override
     public ComputeResult computePrimes(ComputeRequest request) {
         int upperLimit = request.getUpperLimit();
+
         if (upperLimit < 2) {
-            // If input is below 2, there are no primes
             return new ComputeResult(Collections.emptyList(), 0);
         }
 
-        // Compute list of primes
         List<Integer> primes = computePrimeList(upperLimit);
         int totalCount = primes.size();
 
-        // Convert the list of primes to a comma-separated string for storage output
-        String primeString = primes.stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining(", "));
-
-        // Write formatted output to DataStorage
-        DataResponse response = new DataResponse(primes);
-        dataStorageAPI.writeOutput(response);
-
-        // Return the result for further processing
         return new ComputeResult(primes, totalCount);
     }
 
