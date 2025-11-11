@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 public class TestDataStorageAPI {
 
     @Test
-    public void testReadAndWrite_smoke() {
+    public void testReadAndWrite_smoke() throws Exception {
         DataStorageAPIImpl dataStorage = new DataStorageAPIImpl();
 
         // Set output path so writeOutput() knows where to write

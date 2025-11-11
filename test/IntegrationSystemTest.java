@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 public class IntegrationSystemTest {
 
     @Test
-    public void testFullSystemIntegration() {
+    public void testFullSystemIntegration() throws Exception {
         DataStorageAPIImpl dataStorage = new DataStorageAPIImpl();
         ComputeEngineAPI computeEngine = new ComputeEngineAPIImpl();
 
