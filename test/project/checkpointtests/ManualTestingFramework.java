@@ -8,8 +8,6 @@ import networkapi.UserComputeAPIImpl;
 import networkapi.UserRequest;
 
 import processapi.DataStorageAPIImpl;
-import processapi.DataRequest;
-import processapi.DataResponse;
 
 public class ManualTestingFramework {
 
@@ -18,28 +16,22 @@ public class ManualTestingFramework {
 
     public static void main(String[] args) {
 
-        // TODO 1: Instantiate all 3 APIs
+        // Instantiate all 3 real APIs from src/
 
-        // Process API (file-based storage)
+        // Process API 
         DataStorageAPIImpl dataStorage = new DataStorageAPIImpl();
-        dataStorage.setOutputFilePath(OUTPUT);   // where results will be written
+        dataStorage.setOutputFilePath(OUTPUT);   // output location
 
-        // Conceptual API (compute engine)
+        // Conceptual API
         ComputeEngineAPI computeEngine = new ComputeEngineAPIImpl();
 
-        // Network API (coordinates requests)
+        // Network API 
         UserComputeAPI userAPI = new UserComputeAPIImpl(computeEngine, dataStorage);
 
-        // TODO 2: Run computation
 
-        // Create a request for the system
+        // Run the full computation end-to-end
         UserRequest request = new UserRequest(INPUT, OUTPUT, ",");
 
-        // Read input yourself 
-        DataResponse inputData = dataStorage.readInput(new DataRequest(INPUT));
-        System.out.println("Manual test read input: " + inputData.getData());
-
-        // Run the full user-level API
         userAPI.processUserRequest(request);
 
         System.out.println("Manual test completed. Output written to: " + OUTPUT);

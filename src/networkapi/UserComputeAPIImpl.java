@@ -6,6 +6,7 @@ import conceptualapi.ComputeResult;
 import processapi.DataRequest;
 import processapi.DataResponse;
 import processapi.DataStorageAPI;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -22,21 +23,27 @@ public class UserComputeAPIImpl implements UserComputeAPI {
     @Override
     public UserResponse processUserRequest(UserRequest request) {
         try {
-            // Read input (the input file or simulated data)
+            // Read input
             DataRequest dataRequest = new DataRequest(request.getInputSource());
             DataResponse inputResponse = dataStorageAPI.readInput(dataRequest);
             List<Integer> inputNumbers = inputResponse.getData();
 
-            // Run computation for each integer in input
+            // ✅ Collect ALL outputs before writing
+            List<Integer> allResults = new ArrayList<>();
+
             for (Integer number : inputNumbers) {
                 ComputeResult result = computeEngineAPI.computePrimes(new ComputeRequest(number));
-                dataStorageAPI.writeOutput(new DataResponse(result.getPrimes()));
+
+                // accumulate instead of writing multiple times
+                allResults.addAll(result.getPrimes());
 
                 System.out.println("Computed primes up to " + number + ": " + result.getPrimes());
                 System.out.println("Total primes found: " + result.getTotalCount());
             }
 
-            // Return a user-friendly message
+            // ✅ Write ONE time, producing one comma-separated line
+            dataStorageAPI.writeOutput(new DataResponse(allResults));
+
             return new UserResponse("Computation completed successfully.");
 
         } catch (Exception e) {
@@ -44,4 +51,5 @@ public class UserComputeAPIImpl implements UserComputeAPI {
             return new UserResponse("Error processing request: " + e.getMessage());
         }
     }
+
 }
