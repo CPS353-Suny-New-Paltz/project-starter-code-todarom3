@@ -1,19 +1,73 @@
 package processapi;
 
-import java.util.Collections;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+/** provides a concrete implementation of the DataStorageAPI that can read 
+* integers from an input file and write integers to an output file, with 
+* the output file path set by the caller.
+*/
 
 public class DataStorageAPIImpl implements DataStorageAPI {
 
+    private String outputFilePath;
+
+    public void setOutputFilePath(String path) {
+        this.outputFilePath = path;
+    }
+
     @Override
     public DataResponse readInput(DataRequest request) {
-        // Return empty response
-        return new DataResponse(Collections.emptyList());
+        String filePath = request.getSource();
+        List<Integer> numbers = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (!line.isEmpty()) {
+                    numbers.add(Integer.parseInt(line));
+                }
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read from file: " + filePath, e);
+        }
+
+        return new DataResponse(numbers);
     }
 
     @Override
     public DataResponse writeOutput(DataResponse response) {
-        // Return the same response to confirm it is working
-        System.out.println("Output written successfully (placeholder).");
+
+        if (outputFilePath == null) {
+            throw new IllegalStateException(
+                "Output file path was not set. Call setOutputFilePath() before writeOutput()."
+            );
+        }
+
+        File file = new File(outputFilePath);
+
+        if (file.getParentFile() != null) {
+            file.getParentFile().mkdirs();
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (Integer number : response.getData()) {
+                writer.write(number.toString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to write to file: " + outputFilePath, e);
+        }
+
         return response;
     }
 }
