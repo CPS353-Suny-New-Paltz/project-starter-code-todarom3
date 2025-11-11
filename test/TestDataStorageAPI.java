@@ -4,6 +4,9 @@ import processapi.DataResponse;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 
 public class TestDataStorageAPI {
 
@@ -11,11 +14,16 @@ public class TestDataStorageAPI {
     public void testReadAndWrite_smoke() {
         DataStorageAPIImpl dataStorage = new DataStorageAPIImpl();
 
-        // Create a dummy request
-        DataRequest request = new DataRequest("dummy-source");
+        // Set output path so writeOutput() knows where to write
+        dataStorage.setOutputFilePath("test-output/output.txt");
+
+     // Make sure the folder exists:
+        Files.createDirectories(Paths.get("test-input"));
+        // Write the file content:
+        Files.write(Paths.get("test-input/input.txt"), "5\n10\n15\n".getBytes(StandardCharsets.UTF_8));
 
         // Call readInput()
-        DataResponse response = dataStorage.readInput(request);
+        DataResponse response = dataStorage.readInput(new DataRequest("test-input/input.txt"));
         Assertions.assertNotNull(response, "DataResponse should not be null");
 
         // Call writeOutput()

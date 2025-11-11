@@ -2,12 +2,12 @@ package processapi;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /** provides a concrete implementation of the DataStorageAPI that can read 
 * integers from an input file and write integers to an output file, with 
@@ -18,10 +18,6 @@ public class DataStorageAPIImpl implements DataStorageAPI {
 
     private String outputFilePath;
 
-    /**
-     * Setter method so the caller can specify 
-     * where writeOutput() will write its data.
-     */
     public void setOutputFilePath(String path) {
         this.outputFilePath = path;
     }
@@ -57,21 +53,17 @@ public class DataStorageAPIImpl implements DataStorageAPI {
             );
         }
 
-        try {
-            java.io.File file = new java.io.File(outputFilePath);
+        File file = new File(outputFilePath);
 
-            // Create parent folder if it doesn't exist
-            if (file.getParentFile() != null) {
-                file.getParentFile().mkdirs();
+        if (file.getParentFile() != null) {
+            file.getParentFile().mkdirs();
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (Integer number : response.getData()) {
+                writer.write(number.toString());
+                writer.newLine();
             }
-
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                for (Integer number : response.getData()) {
-                    writer.write(number.toString());
-                    writer.newLine();
-                }
-            }
-
         } catch (IOException e) {
             throw new RuntimeException("Failed to write to file: " + outputFilePath, e);
         }
