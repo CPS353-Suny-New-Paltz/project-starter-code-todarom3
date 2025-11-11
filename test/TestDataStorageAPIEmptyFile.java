@@ -11,10 +11,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 
-public class TestDataStorageAPI_EmptyFile {
+public class TestDataStorageAPIEmptyFile {
 
     @Test
-    public void testReadInput_emptyFile() throws Exception {
+    public void testReadInputEmptyFile() throws Exception {
 
         Files.createDirectories(Paths.get("test-input"));
         Files.write(Paths.get("test-input/empty.txt"), "".getBytes(StandardCharsets.UTF_8));
