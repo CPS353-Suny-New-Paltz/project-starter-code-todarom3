@@ -55,15 +55,23 @@ public class DataStorageAPIImpl implements DataStorageAPI {
 
         File file = new File(outputFilePath);
 
+        //Ensure parent directories exist
         if (file.getParentFile() != null) {
             file.getParentFile().mkdirs();
         }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            for (Integer number : response.getData()) {
-                writer.write(number.toString());
-                writer.newLine();
+
+            List<Integer> data = response.getData();
+
+            // Write all numbers ON ONE LINE, comma-separated
+            for (int i = 0; i < data.size(); i++) {
+                writer.write(data.get(i).toString());
+                if (i < data.size() - 1) {
+                    writer.write(",");
+                }
             }
+
         } catch (IOException e) {
             throw new RuntimeException("Failed to write to file: " + outputFilePath, e);
         }
