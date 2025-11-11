@@ -8,6 +8,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/** provides a concrete implementation of the DataStorageAPI that can read 
+* integers from an input file and write integers to an output file, with 
+* the output file path set by the caller.
+*/
+
 public class DataStorageAPIImpl implements DataStorageAPI {
 
     private String outputFilePath;
@@ -51,11 +57,19 @@ public class DataStorageAPIImpl implements DataStorageAPI {
             );
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath))) {
+        try {
+            java.io.File file = new java.io.File(outputFilePath);
 
-            for (Integer number : response.getData()) {
-                writer.write(number.toString());
-                writer.newLine();
+            // Create parent folder if it doesn't exist
+            if (file.getParentFile() != null) {
+                file.getParentFile().mkdirs();
+            }
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                for (Integer number : response.getData()) {
+                    writer.write(number.toString());
+                    writer.newLine();
+                }
             }
 
         } catch (IOException e) {
