@@ -21,7 +21,8 @@ public class ManualTestingFramework {
         // Process API 
         DataStorageAPIImpl dataStorage = new DataStorageAPIImpl();
         dataStorage.setOutputFilePath(OUTPUT);   // output location
-
+        dataStorage.setOutputDelimiter(","); 
+        
         // Conceptual API
         ComputeEngineAPI computeEngine = new ComputeEngineAPIImpl();
 
