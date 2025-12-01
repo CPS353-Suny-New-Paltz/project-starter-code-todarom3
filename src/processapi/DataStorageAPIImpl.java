@@ -22,7 +22,7 @@ public class DataStorageAPIImpl implements DataStorageAPI {
         this.outputFilePath = path;
     }
 
-    public void setDelimiter(String delimiter) {
+    public void setOutputDelimiter(String delimiter) {
         this.delimiter = delimiter;
     }
 
