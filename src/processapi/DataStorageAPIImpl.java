@@ -13,13 +13,17 @@ import java.util.List;
 * integers from an input file and write integers to an output file, with 
 * the output file path set by the caller.
 */
-
 public class DataStorageAPIImpl implements DataStorageAPI {
 
     private String outputFilePath;
+    private String delimiter = ",";   
 
     public void setOutputFilePath(String path) {
         this.outputFilePath = path;
+    }
+
+    public void setOutputDelimiter(String delimiter) {
+        this.delimiter = delimiter;
     }
 
     @Override
@@ -28,7 +32,6 @@ public class DataStorageAPIImpl implements DataStorageAPI {
         List<Integer> numbers = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
@@ -55,7 +58,6 @@ public class DataStorageAPIImpl implements DataStorageAPI {
 
         File file = new File(outputFilePath);
 
-        //Ensure parent directories exist
         if (file.getParentFile() != null) {
             file.getParentFile().mkdirs();
         }
@@ -64,11 +66,10 @@ public class DataStorageAPIImpl implements DataStorageAPI {
 
             List<Integer> data = response.getData();
 
-            // Write all numbers ON ONE LINE, comma-separated
             for (int i = 0; i < data.size(); i++) {
                 writer.write(data.get(i).toString());
                 if (i < data.size() - 1) {
-                    writer.write(",");
+                    writer.write(this.delimiter);   
                 }
             }
 
