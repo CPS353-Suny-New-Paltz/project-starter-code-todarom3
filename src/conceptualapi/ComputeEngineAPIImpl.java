@@ -11,6 +11,15 @@ public class ComputeEngineAPIImpl implements ComputeEngineAPI {
 
     @Override
     public ComputeResult computePrimes(ComputeRequest request) {
+        // VALIDATION ADDED 
+        if (request == null) {
+            throw new IllegalArgumentException("ComputeRequest cannot be null.");
+        }
+
+        if (request.getUpperLimit() < 0) {
+            throw new IllegalArgumentException("Upper limit must be non-negative.");
+        }
+
         int upperLimit = request.getUpperLimit();
 
         if (upperLimit < 2) {
