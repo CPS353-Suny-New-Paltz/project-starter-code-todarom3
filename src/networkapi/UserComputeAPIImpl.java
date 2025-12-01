@@ -29,10 +29,10 @@ public class UserComputeAPIImpl implements UserComputeAPI {
 
     @Override
     public UserResponse processUserRequest(UserRequest request) {
+        // BASIC VALIDATION (not part of exception handling requirement)
         if (request == null) {
             return new UserResponse("Error: request cannot be null.");
         }
-
         if (request.getInputSource() == null || request.getInputSource().isEmpty()) {
             return new UserResponse("Error: input file path is missing.");
         }
@@ -44,16 +44,17 @@ public class UserComputeAPIImpl implements UserComputeAPI {
         }
 
         try {
-            // Read input file
-            DataRequest dataRequest = new DataRequest(request.getInputSource());
-            DataResponse inputResponse = dataStorageAPI.readInput(dataRequest);
-            List<Integer> inputNumbers = inputResponse.getData();
+            // Configure output file + delimiter
+            dataStorageAPI.setOutputDelimiter(request.getDelimiter());
 
-            if (inputNumbers == null) {
-                return new UserResponse("Error: input file contained no valid data.");
+            // READ INPUT
+            DataResponse inputResponse = dataStorageAPI.readInput(new DataRequest(request.getInputSource()));
+
+            if (inputResponse == null || inputResponse.getData() == null) {
+                return new UserResponse("Error: failed to read input.");
             }
 
-            // Collect ALL prime results before writing
+            List<Integer> inputNumbers = inputResponse.getData();
             List<Integer> allResults = new ArrayList<>();
 
             for (Integer number : inputNumbers) {
@@ -65,16 +66,16 @@ public class UserComputeAPIImpl implements UserComputeAPI {
                 allResults.addAll(result.getPrimes());
             }
 
-            // Set delimiter before writing
-            dataStorageAPI.setOutputDelimiter(request.getDelimiter());
-
-            // Single write to output file
-            dataStorageAPI.writeOutput(new DataResponse(allResults));
+            // WRITE OUTPUT
+            DataResponse writeResponse = dataStorageAPI.writeOutput(new DataResponse(allResults));
+            if (writeResponse == null) {
+                return new UserResponse("Error: failed to write output.");
+            }
 
             return new UserResponse("Computation completed successfully.");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            // SAFE BOUNDARY — translate unexpected exception to error response
             return new UserResponse("Error processing request: " + e.getMessage());
         }
     }
