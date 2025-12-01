@@ -8,9 +8,6 @@ public class InMemoryDataStorageAPI implements DataStorageAPI {
     private InMemoryInput input;
     private InMemoryOutput output;
 
-    // store delimiter even if unused
-    private String outputDelimiter = ",";
-
     public InMemoryDataStorageAPI(InMemoryInput input, InMemoryOutput output) {
         this.input = input;
         this.output = output;
@@ -18,49 +15,29 @@ public class InMemoryDataStorageAPI implements DataStorageAPI {
 
     @Override
     public DataResponse readInput(DataRequest request) {
-        // Wrapping the in memory input list as a DataResponse
+        // No validation needed, this API always returns in-memory data
         List<Integer> inputList = input.getInputData();
         return new DataResponse(inputList);
     }
 
     @Override
     public DataResponse writeOutput(DataResponse response) {
-        // Write each integer as a string to the output, joined using the delimiter
-        // add each element separately to maintain test clearly
-
-        List<Integer> nums = response.getData();
-
-        if (nums == null || nums.isEmpty()) {
-            return response;
+        // Test expects each integer written as a separate string
+        for (Integer num : response.getData()) {
+            output.addOutput(String.valueOf(num));
         }
-
-        // Join numbers into ONE delimited string
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < nums.size(); i++) {
-            sb.append(nums.get(i));
-            if (i < nums.size() - 1) {
-                sb.append(outputDelimiter);
-            }
-        }
-
-        // Store that one string in output
-        output.addOutput(sb.toString());
-
         return response;
     }
 
-    @Override
-    public void setOutputDelimiter(String delimiter) {
-        // If caller passes null or empty, fall back to default comma
-        if (delimiter == null || delimiter.isEmpty()) {
-            this.outputDelimiter = ",";
-        } else {
-            this.outputDelimiter = delimiter;
-        }
-    }
-
-    // Used in tests to verify what was written
+    // For tests to inspect what was written
     public List<String> getWrittenOutput() {
         return output.getOutputData();
+    }
+
+    // No delimiter support in the in memory version
+    @Override
+    public void setOutputDelimiter(String delimiter) {
+        // Not used because test environment does not require delimiter logic
+        // Provided only because DataStorageAPI now defines it.
     }
 }
