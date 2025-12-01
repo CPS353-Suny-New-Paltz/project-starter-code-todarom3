@@ -13,21 +13,38 @@ import java.util.List;
 * integers from an input file and write integers to an output file, with 
 * the output file path set by the caller.
 */
+
 public class DataStorageAPIImpl implements DataStorageAPI {
 
     private String outputFilePath;
     private String delimiter = ",";   
 
     public void setOutputFilePath(String path) {
+        // VALIDATION
+        if (path == null || path.trim().isEmpty()) {
+            throw new IllegalArgumentException("Output file path cannot be null or empty");
+        }
         this.outputFilePath = path;
     }
 
     public void setOutputDelimiter(String delimiter) {
+        // VALIDATION
+        if (delimiter == null || delimiter.isEmpty()) {
+            throw new IllegalArgumentException("Delimiter cannot be null or empty");
+        }
         this.delimiter = delimiter;
     }
 
     @Override
     public DataResponse readInput(DataRequest request) {
+        // VALIDATION
+        if (request == null) {
+            throw new IllegalArgumentException("DataRequest cannot be null");
+        }
+        if (request.getSource() == null || request.getSource().trim().isEmpty()) {
+            throw new IllegalArgumentException("Input file path cannot be null or empty");
+        }
+
         String filePath = request.getSource();
         List<Integer> numbers = new ArrayList<>();
 
@@ -50,10 +67,12 @@ public class DataStorageAPIImpl implements DataStorageAPI {
     @Override
     public DataResponse writeOutput(DataResponse response) {
 
+        // VALIDATION
+        if (response == null) {
+            throw new IllegalArgumentException("DataResponse cannot be null");
+        }
         if (outputFilePath == null) {
-            throw new IllegalStateException(
-                "Output file path was not set. Call setOutputFilePath() before writeOutput()."
-            );
+            throw new IllegalStateException("Output file path not set");
         }
 
         File file = new File(outputFilePath);

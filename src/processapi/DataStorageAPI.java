@@ -6,4 +6,6 @@ import project.annotations.ProcessAPI;
 public interface DataStorageAPI {
     DataResponse readInput(DataRequest request);
     DataResponse writeOutput(DataResponse response);
+
+void setOutputDelimiter(String delimiter);
 }

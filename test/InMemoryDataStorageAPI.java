@@ -15,24 +15,29 @@ public class InMemoryDataStorageAPI implements DataStorageAPI {
 
     @Override
     public DataResponse readInput(DataRequest request) {
-        // Wrapping the in memory input list as a DataResponse
+        // No validation needed, this API always returns in-memory data
         List<Integer> inputList = input.getInputData();
         return new DataResponse(inputList);
     }
 
     @Override
     public DataResponse writeOutput(DataResponse response) {
-        // Write each integer as a string to the output 
+        // Test expects each integer written as a separate string
         for (Integer num : response.getData()) {
             output.addOutput(String.valueOf(num));
         }
-
-        // confirm success
         return response;
     }
 
-    // Verifying output in tests
+    // For tests to inspect what was written
     public List<String> getWrittenOutput() {
         return output.getOutputData();
+    }
+
+    // No delimiter support in the in memory version
+    @Override
+    public void setOutputDelimiter(String delimiter) {
+        // Not used because test environment does not require delimiter logic
+        // Provided only because DataStorageAPI now defines it.
     }
 }
