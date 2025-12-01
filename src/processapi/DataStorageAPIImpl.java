@@ -17,18 +17,17 @@ import java.util.List;
 public class DataStorageAPIImpl implements DataStorageAPI {
 
     private String outputFilePath;
-    private String delimiter = ",";   
+    private String delimiter = ",";
 
     public void setOutputFilePath(String path) {
-        // VALIDATION
         if (path == null || path.trim().isEmpty()) {
             throw new IllegalArgumentException("Output file path cannot be null or empty");
         }
         this.outputFilePath = path;
     }
 
+    @Override
     public void setOutputDelimiter(String delimiter) {
-        // VALIDATION
         if (delimiter == null || delimiter.isEmpty()) {
             throw new IllegalArgumentException("Delimiter cannot be null or empty");
         }
@@ -37,12 +36,8 @@ public class DataStorageAPIImpl implements DataStorageAPI {
 
     @Override
     public DataResponse readInput(DataRequest request) {
-        // VALIDATION
-        if (request == null) {
-            throw new IllegalArgumentException("DataRequest cannot be null");
-        }
-        if (request.getSource() == null || request.getSource().trim().isEmpty()) {
-            throw new IllegalArgumentException("Input file path cannot be null or empty");
+        if (request == null || request.getSource() == null || request.getSource().trim().isEmpty()) {
+            return new DataResponse(null); // sentinel
         }
 
         String filePath = request.getSource();
@@ -56,9 +51,9 @@ public class DataStorageAPIImpl implements DataStorageAPI {
                     numbers.add(Integer.parseInt(line));
                 }
             }
-
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read from file: " + filePath, e);
+        } catch (Exception e) {
+            // SAFE BOUNDARY
+            return new DataResponse(null);   // sentinel for error
         }
 
         return new DataResponse(numbers);
@@ -66,34 +61,30 @@ public class DataStorageAPIImpl implements DataStorageAPI {
 
     @Override
     public DataResponse writeOutput(DataResponse response) {
-
-        // VALIDATION
-        if (response == null) {
-            throw new IllegalArgumentException("DataResponse cannot be null");
+        if (response == null || response.getData() == null) {
+            return new DataResponse(null);   // sentinel
         }
         if (outputFilePath == null) {
-            throw new IllegalStateException("Output file path not set");
+            return new DataResponse(null);   // sentinel
         }
 
         File file = new File(outputFilePath);
-
         if (file.getParentFile() != null) {
             file.getParentFile().mkdirs();
         }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-
             List<Integer> data = response.getData();
 
             for (int i = 0; i < data.size(); i++) {
                 writer.write(data.get(i).toString());
                 if (i < data.size() - 1) {
-                    writer.write(this.delimiter);   
+                    writer.write(this.delimiter);
                 }
             }
-
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to write to file: " + outputFilePath, e);
+        } catch (Exception e) {
+            // SAFE BOUNDARY
+            return new DataResponse(null);   // sentinel for error
         }
 
         return response;
