@@ -31,18 +31,17 @@ public class TestMultiUser {
     @Test
     public void compareMultiAndSingleThreaded() throws Exception {
 
-        int nThreads = 4;
+        int numThreads = 4;
         List<TestUser> testUsers = new ArrayList<>();
 
-        for (int i = 0; i < nThreads; i++) {
-            // constructor TestUser(UserComputeAPI coordinator)
+        for (int i = 0; i < numThreads; i++) {
             testUsers.add(new TestUser(coordinator));
         }
 
         // SINGLE-THREADED RUN
         String singlePrefix = "testMultiUser.singleThreadOut.tmp";
 
-        for (int i = 0; i < nThreads; i++) {
+        for (int i = 0; i < numThreads; i++) {
             File out = new File(singlePrefix + i);
             out.deleteOnExit();
             try {
@@ -58,7 +57,7 @@ public class TestMultiUser {
 
         String multiPrefix = "testMultiUser.multiThreadOut.tmp";
 
-        for (int i = 0; i < nThreads; i++) {
+        for (int i = 0; i < numThreads; i++) {
             File out = new File(multiPrefix + i);
             out.deleteOnExit();
 
@@ -78,15 +77,15 @@ public class TestMultiUser {
         }
 
         // LOAD & COMPARE
-        List<String> singleOut = loadAllOutput(singlePrefix, nThreads);
-        List<String> multiOut = loadAllOutput(multiPrefix, nThreads);
+        List<String> singleOut = loadAllOutput(singlePrefix, numThreads);
+        List<String> multiOut = loadAllOutput(multiPrefix, numThreads);
 
         Assertions.assertEquals(singleOut, multiOut);
     }
 
-    private List<String> loadAllOutput(String prefix, int nThreads) throws IOException {
+    private List<String> loadAllOutput(String prefix, int numThreads) throws IOException {
         List<String> output = new ArrayList<>();
-        for (int i = 0; i < nThreads; i++) {
+        for (int i = 0; i < numThreads; i++) {
             File f = new File(prefix + i);
             output.addAll(Files.readAllLines(f.toPath()));
         }
