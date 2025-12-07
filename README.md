@@ -4,7 +4,7 @@ Example - Input: N = 30
 Output: Prime numbers ≤ 30: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
 Total primes found: 10
 
-## Multi-Threaded Version (Checkpoint 6)
+Multi-Threaded Version (Checkpoint 6):
 
 I added a multi-threaded version of my NetworkAPI called "UserComputeAPIMultiThreadedImpl".
 
