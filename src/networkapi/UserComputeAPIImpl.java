@@ -6,6 +6,7 @@ import conceptualapi.ComputeResult;
 import processapi.DataRequest;
 import processapi.DataResponse;
 import processapi.DataStorageAPI;
+import processapi.DataStorageAPIImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +23,13 @@ public class UserComputeAPIImpl implements UserComputeAPI {
         if (dataStorageAPI == null) {
             throw new IllegalArgumentException("DataStorageAPI dependency cannot be null.");
         }
-
         this.computeEngineAPI = computeEngineAPI;
         this.dataStorageAPI = dataStorageAPI;
     }
 
     @Override
     public UserResponse processUserRequest(UserRequest request) {
-        // BASIC VALIDATION (not part of exception handling requirement)
+
         if (request == null) {
             return new UserResponse("Error: request cannot be null.");
         }
@@ -44,11 +44,13 @@ public class UserComputeAPIImpl implements UserComputeAPI {
         }
 
         try {
-            // Configure output file + delimiter
+            ((DataStorageAPIImpl) dataStorageAPI)
+                    .setOutputFilePath(request.getOutputDestination());
+
             dataStorageAPI.setOutputDelimiter(request.getDelimiter());
 
-            // READ INPUT
-            DataResponse inputResponse = dataStorageAPI.readInput(new DataRequest(request.getInputSource()));
+            DataResponse inputResponse =
+                    dataStorageAPI.readInput(new DataRequest(request.getInputSource()));
 
             if (inputResponse == null || inputResponse.getData() == null) {
                 return new UserResponse("Error: failed to read input.");
@@ -61,13 +63,14 @@ public class UserComputeAPIImpl implements UserComputeAPI {
                 if (number == null || number < 0) {
                     return new UserResponse("Error: invalid number in input: " + number);
                 }
-
-                ComputeResult result = computeEngineAPI.computePrimes(new ComputeRequest(number));
+                ComputeResult result =
+                        computeEngineAPI.computePrimes(new ComputeRequest(number));
                 allResults.addAll(result.getPrimes());
             }
 
-            // WRITE OUTPUT
-            DataResponse writeResponse = dataStorageAPI.writeOutput(new DataResponse(allResults));
+            DataResponse writeResponse =
+                    dataStorageAPI.writeOutput(new DataResponse(allResults));
+
             if (writeResponse == null) {
                 return new UserResponse("Error: failed to write output.");
             }
@@ -75,7 +78,6 @@ public class UserComputeAPIImpl implements UserComputeAPI {
             return new UserResponse("Computation completed successfully.");
 
         } catch (Exception e) {
-            // SAFE BOUNDARY — translate unexpected exception to error response
             return new UserResponse("Error processing request: " + e.getMessage());
         }
     }
