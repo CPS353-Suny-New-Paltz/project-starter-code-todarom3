@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package processapi;
+
+option java_multiple_files = true;
+option java_outer_classname = "DataStoreProto";
+
+message DataReadRequestProto {
+  string source = 1;
+}
+
+message DataReadResponseProto {
+  repeated int32 data = 1;
+}
+
+message DataWriteRequestProto {
+  repeated int32 data = 1;
+  string outputDestination = 2;
+  string delimiter = 3;
+}
+
+message DataWriteResponseProto {
+  bool success = 1;
+  string errorMessage = 2;
+}
+
+service DataStoreService {
+  rpc ReadInput(DataReadRequestProto) returns (DataReadResponseProto);
+  rpc WriteOutput(DataWriteRequestProto) returns (DataWriteResponseProto);
+}
