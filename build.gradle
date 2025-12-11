@@ -1,19 +1,33 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "com.google.protobuf:protobuf-gradle-plugin:0.9.4"
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'com.google.protobuf'
 
-eclipse.project.name = 'TodaroProject' 
+eclipse.project.name = 'TodaroProject'
 
 sourceSets {
-	main {
-	  java {
-		srcDirs = ['src']
-	  }
-	}
-	test {
-	  java {
-	     srcDirs = ['test']
-	  }
-	 }
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        proto {
+            srcDir 'src/main/proto'
+        }
+    }
+    test {
+        java {
+            srcDirs = ['test']
+        }
+    }
 }
 
 repositories {
@@ -23,11 +37,35 @@ repositories {
 dependencies {
     testImplementation('org.junit.jupiter:junit-jupiter:5.10.2')
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.2')
-	testImplementation('org.mockito:mockito-core:5.10.0')
-		implementation('com.google.code.gson:gson:2.13.1')
-		implementation 'fr.inria.gforge.spoon:spoon-core:11.2.0'
+    testImplementation('org.mockito:mockito-core:5.10.0')
+
+    implementation('com.google.code.gson:gson:2.13.1')
+    implementation 'fr.inria.gforge.spoon:spoon-core:11.2.0'
+
+    implementation 'io.grpc:grpc-netty:1.62.2'
+    implementation 'io.grpc:grpc-protobuf:1.62.2'
+    implementation 'io.grpc:grpc-stub:1.62.2'
+    implementation 'com.google.protobuf:protobuf-java:3.25.3'
 }
 
 test {
     useJUnitPlatform()
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.25.3"
+    }
+
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.62.2"
+        }
+    }
+
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins { grpc {} }
+        }
+    }
 }
