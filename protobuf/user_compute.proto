@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_package = "networkapi";
+option java_multiple_files = true;
+option java_generic_services = true;  
+
+service UserComputeService {
+  rpc ProcessUserRequest (UserRequestMessage) returns (UserResponseMessage);
+}
+
+message UserRequestMessage {
+  string inputSource = 1;
+  string outputDestination = 2;
+  string delimiter = 3;
+}
+
+message UserResponseMessage {
+  string message = 1;
+}
