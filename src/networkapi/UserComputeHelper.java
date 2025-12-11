@@ -3,14 +3,13 @@ package networkapi;
 import processapi.DataRequest;
 import processapi.DataResponse;
 import processapi.DataStorageAPI;
-import processapi.DataStorageAPIImpl;
 
 import java.util.List;
 
 public class UserComputeHelper {
 
-    //Performs shared validation and reads input data.
-    //Returns either: List<Integer> on success, or UserResponse on error
+    // Performs shared validation and reads input data.
+    // Returns either: List<Integer> on success, or UserResponse on error
     public static Object readInputOrError(UserRequest request, DataStorageAPI dataStorageAPI) {
 
         if (request == null) {
@@ -26,13 +25,10 @@ public class UserComputeHelper {
             return new UserResponse("Error: delimiter cannot be null.");
         }
 
-        // Set delimiter
-        dataStorageAPI.setOutputDelimiter(request.getDelimiter());
-
-        // Cast setOutputFilePath, not part of the interface
+        // Configure delimiter and output file 
         try {
-            ((DataStorageAPIImpl) dataStorageAPI)
-                    .setOutputFilePath(request.getOutputDestination());
+            dataStorageAPI.setOutputDelimiter(request.getDelimiter());
+            dataStorageAPI.setOutputFilePath(request.getOutputDestination());
         } catch (Exception e) {
             return new UserResponse("Error: " + e.getMessage());
         }
@@ -48,7 +44,7 @@ public class UserComputeHelper {
         return input.getData();
     }
 
-     //Writes results safely.
+    // Writes results
     public static UserResponse writeOutput(List<Integer> results, DataStorageAPI storage) {
         DataResponse response = storage.writeOutput(new DataResponse(results));
         if (response == null) {

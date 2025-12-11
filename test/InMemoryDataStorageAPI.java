@@ -34,10 +34,13 @@ public class InMemoryDataStorageAPI implements DataStorageAPI {
         return output.getOutputData();
     }
 
-    // No delimiter support in the in memory version
     @Override
     public void setOutputDelimiter(String delimiter) {
         // Not used because test environment does not require delimiter logic
-        // Provided only because DataStorageAPI now defines it.
+    }
+
+    @Override
+    public void setOutputFilePath(String path) {
+        // Not used in the in-memory implementation
     }
 }
