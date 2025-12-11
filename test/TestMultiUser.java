@@ -1,7 +1,7 @@
 import conceptualapi.ComputeEngineAPI;
 import conceptualapi.ComputeEngineAPIImpl;
 import networkapi.UserComputeAPI;
-import networkapi.UserComputeAPIImpl;
+import networkapi.UserComputeAPIMultiThreadedImpl;
 import processapi.DataStorageAPIImpl;
 
 import java.io.File;
@@ -25,7 +25,9 @@ public class TestMultiUser {
     public void initializeComputeEngine() {
         ComputeEngineAPI engine = new ComputeEngineAPIImpl();
         DataStorageAPIImpl storage = new DataStorageAPIImpl();
-        coordinator = new UserComputeAPIImpl(engine, storage);
+
+        // Use the multithreaded implementation
+        coordinator = new UserComputeAPIMultiThreadedImpl(engine, storage);
     }
 
     @Test
@@ -35,6 +37,7 @@ public class TestMultiUser {
         List<TestUser> testUsers = new ArrayList<>();
 
         for (int i = 0; i < numThreads; i++) {
+            // All TestUser instances share the same coordinator
             testUsers.add(new TestUser(coordinator));
         }
 
@@ -72,8 +75,8 @@ public class TestMultiUser {
             }));
         }
 
-        for (Future<?> f : futures) {
-            f.get();
+        for (Future<?> future : futures) {
+            future.get();
         }
 
         // LOAD & COMPARE

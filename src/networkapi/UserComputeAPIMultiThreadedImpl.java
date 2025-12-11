@@ -3,6 +3,8 @@ package networkapi;
 import conceptualapi.ComputeEngineAPI;
 import conceptualapi.ComputeRequest;
 import conceptualapi.ComputeResult;
+import processapi.DataRequest;
+import processapi.DataResponse;
 import processapi.DataStorageAPI;
 import processapi.DataStorageAPIImpl;
 
@@ -15,59 +17,85 @@ import java.util.concurrent.Future;
 public class UserComputeAPIMultiThreadedImpl implements UserComputeAPI {
 
     private final ComputeEngineAPI computeEngineAPI;
-    private final DataStorageAPI dataStorageAPI;
 
-    // Upper bound for number of threads 
+    // Upper bound on the number of worker threads 
     private static final int MAX_THREADS = 4;
 
-    public UserComputeAPIMultiThreadedImpl(
-            ComputeEngineAPI computeEngineAPI,
-            DataStorageAPI dataStorageAPI) {
-
+    public UserComputeAPIMultiThreadedImpl(ComputeEngineAPI computeEngineAPI,
+                                           DataStorageAPI dataStorageAPI) {
+        if (computeEngineAPI == null) {
+            throw new IllegalArgumentException("ComputeEngineAPI dependency cannot be null.");
+        }
+        // Implementation creates its own storage per request to stay thread-safe.
         this.computeEngineAPI = computeEngineAPI;
-        this.dataStorageAPI = dataStorageAPI;
     }
 
     @Override
     public UserResponse processUserRequest(UserRequest request) {
 
+        // Basic validation 
+        if (request == null) {
+            return new UserResponse("Error: request cannot be null.");
+        }
+        if (request.getInputSource() == null || request.getInputSource().isEmpty()) {
+            return new UserResponse("Error: input file path is missing.");
+        }
+        if (request.getOutputDestination() == null
+                || request.getOutputDestination().isEmpty()) {
+            return new UserResponse("Error: output file path is missing.");
+        }
+        if (request.getDelimiter() == null) {
+            return new UserResponse("Error: delimiter cannot be null.");
+        }
+
         try {
-            // Shared input validation & reading
-            Object input = UserComputeHelper.readInputOrError(request, dataStorageAPI);
-            if (input instanceof UserResponse) {
-                return (UserResponse) input;
+            // Each request gets its own storage instance 
+            DataStorageAPIImpl storage = new DataStorageAPIImpl();
+            storage.setOutputDelimiter(request.getDelimiter());
+            storage.setOutputFilePath(request.getOutputDestination());
+
+            // READ INPUT
+            DataResponse inputResponse =
+                    storage.readInput(new DataRequest(request.getInputSource()));
+            if (inputResponse == null || inputResponse.getData() == null) {
+                return new UserResponse("Error: failed to read input.");
             }
 
-            @SuppressWarnings("unchecked")
-            List<Integer> inputNumbers = (List<Integer>) input;
+            List<Integer> inputNumbers = inputResponse.getData();
 
-            // Set output file path via implementation
-            ((DataStorageAPIImpl) dataStorageAPI).setOutputFilePath(request.getOutputDestination());
-
-            // Multi-threaded processing of conceptual compute calls
+            // MULTI-THREADED COMPUTATION
             ExecutorService pool = Executors.newFixedThreadPool(MAX_THREADS);
             List<Future<List<Integer>>> futures = new ArrayList<>();
 
-            for (Integer n : inputNumbers) {
+            for (Integer number : inputNumbers) {
+                if (number == null || number < 0) {
+                    pool.shutdownNow();
+                    return new UserResponse("Error: invalid number in input: " + number);
+                }
+
                 futures.add(pool.submit(() -> {
                     ComputeResult result =
-                            computeEngineAPI.computePrimes(new ComputeRequest(n));
+                            computeEngineAPI.computePrimes(new ComputeRequest(number));
                     return result.getPrimes();
                 }));
             }
 
-            // Collect results
             List<Integer> allResults = new ArrayList<>();
-            for (Future<List<Integer>> f : futures) {
-                allResults.addAll(f.get());
+            for (Future<List<Integer>> future : futures) {
+                allResults.addAll(future.get());
             }
 
             pool.shutdown();
 
-            // Write output
-            return UserComputeHelper.writeOutput(allResults, dataStorageAPI);
+            // WRITE OUTPUT
+            DataResponse writeResponse = storage.writeOutput(new DataResponse(allResults));
+            if (writeResponse == null) {
+                return new UserResponse("Error: failed to write output.");
+            }
 
+            return new UserResponse("Computation completed successfully.");
         } catch (Exception e) {
+            // translate exceptions to a safe user response
             return new UserResponse("Error processing request: " + e.getMessage());
         }
     }
