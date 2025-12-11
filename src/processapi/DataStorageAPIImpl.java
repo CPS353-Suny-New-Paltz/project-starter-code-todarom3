@@ -5,20 +5,20 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** provides a concrete implementation of the DataStorageAPI that can read 
-* integers from an input file and write integers to an output file, with 
-* the output file path set by the caller.
-*/
-
+/**
+ * provides a concrete implementation of the DataStorageAPI that can read
+ * integers from an input file and write integers to an output file, with
+ * the output file path set by the caller.
+ */
 public class DataStorageAPIImpl implements DataStorageAPI {
 
     private String outputFilePath;
     private String delimiter = ",";
 
+    @Override
     public void setOutputFilePath(String path) {
         if (path == null || path.trim().isEmpty()) {
             throw new IllegalArgumentException("Output file path cannot be null or empty");
@@ -37,7 +37,7 @@ public class DataStorageAPIImpl implements DataStorageAPI {
     @Override
     public DataResponse readInput(DataRequest request) {
         if (request == null || request.getSource() == null || request.getSource().trim().isEmpty()) {
-            return new DataResponse(null); // sentinel
+            return new DataResponse(null);
         }
 
         String filePath = request.getSource();
@@ -52,8 +52,7 @@ public class DataStorageAPIImpl implements DataStorageAPI {
                 }
             }
         } catch (Exception e) {
-            // SAFE BOUNDARY
-            return new DataResponse(null);   // sentinel for error
+            return new DataResponse(null);  
         }
 
         return new DataResponse(numbers);
@@ -62,10 +61,10 @@ public class DataStorageAPIImpl implements DataStorageAPI {
     @Override
     public DataResponse writeOutput(DataResponse response) {
         if (response == null || response.getData() == null) {
-            return new DataResponse(null);   // sentinel
+            return new DataResponse(null);   
         }
         if (outputFilePath == null) {
-            return new DataResponse(null);   // sentinel
+            return new DataResponse(null);  
         }
 
         File file = new File(outputFilePath);
@@ -83,8 +82,7 @@ public class DataStorageAPIImpl implements DataStorageAPI {
                 }
             }
         } catch (Exception e) {
-            // SAFE BOUNDARY
-            return new DataResponse(null);   // sentinel for error
+            return new DataResponse(null);  
         }
 
         return response;

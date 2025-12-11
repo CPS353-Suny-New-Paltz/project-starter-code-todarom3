@@ -6,7 +6,6 @@ import conceptualapi.ComputeResult;
 import processapi.DataRequest;
 import processapi.DataResponse;
 import processapi.DataStorageAPI;
-import processapi.DataStorageAPIImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +43,8 @@ public class UserComputeAPIImpl implements UserComputeAPI {
         }
 
         try {
-            ((DataStorageAPIImpl) dataStorageAPI)
-                    .setOutputFilePath(request.getOutputDestination());
-
+            // use the interface method, no cast needed
+            dataStorageAPI.setOutputFilePath(request.getOutputDestination());
             dataStorageAPI.setOutputDelimiter(request.getDelimiter());
 
             DataResponse inputResponse =

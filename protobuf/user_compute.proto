@@ -1,0 +1,21 @@
+syntax = "proto2";
+
+package networkapi;
+
+option java_multiple_files = true;
+option java_outer_classname = "UserComputeProto";
+
+message UserRequestProto {
+  optional string inputSource = 1;
+  optional string outputDestination = 2;
+  optional string delimiter = 3;
+}
+
+message UserResponseProto {
+  optional string message = 1;
+}
+
+service UserComputeService {
+  rpc ProcessUserRequest(UserRequestProto)
+      returns (UserResponseProto);
+}

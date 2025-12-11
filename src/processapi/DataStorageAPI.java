@@ -5,7 +5,12 @@ import project.annotations.ProcessAPI;
 @ProcessAPI
 public interface DataStorageAPI {
     DataResponse readInput(DataRequest request);
+
     DataResponse writeOutput(DataResponse response);
 
-void setOutputDelimiter(String delimiter);
+    // Configures how to separate values when writing output
+    void setOutputDelimiter(String delimiter);
+
+    // Configures where to write the output file
+    void setOutputFilePath(String path);
 }

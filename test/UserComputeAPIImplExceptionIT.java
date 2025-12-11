@@ -19,23 +19,26 @@ exception escape. */
 public class UserComputeAPIImplExceptionIT {
 
     // Fake DataStorageAPI that always throws when reading input
-    private static class FailingDataStorageAPI implements DataStorageAPI {
+	 private static class FailingDataStorageAPI implements DataStorageAPI {
 
-        @Override
-        public DataResponse readInput(DataRequest request) {
-            throw new RuntimeException("Simulated read failure");
-        }
+	        @Override
+	        public DataResponse readInput(DataRequest request) {
+	            throw new RuntimeException("Simulated read failure");
+	        }
 
-        @Override
-        public DataResponse writeOutput(DataResponse response) {
-            throw new RuntimeException("Simulated write failure");
-        }
+	        @Override
+	        public DataResponse writeOutput(DataResponse response) {
+	            throw new RuntimeException("Simulated write failure");
+	        }
 
-        @Override
-        public void setOutputDelimiter(String delimiter) {
-            // not relevant for this test
-        }
-    }
+	        @Override
+	        public void setOutputDelimiter(String delimiter) {
+	        }
+
+	        @Override
+	        public void setOutputFilePath(String path) {
+	        }
+	    }
 
     @Test
     public void testExceptionHandling_translatedToUserResponse() {
@@ -45,17 +48,15 @@ public class UserComputeAPIImplExceptionIT {
             new FailingDataStorageAPI()
         );
 
-        // build valid request (the failure will happen inside storage)
+        // build valid request
         UserRequest request = new UserRequest(
                 "input.txt",
                 "output.txt",
                 ","
         );
 
-        // ACT
         UserResponse response = api.processUserRequest(request);
 
-        // ASSERT
         assertNotNull(response);
         assertTrue(response.getMessage().startsWith("Error"),
                 "Coordinator should translate exceptions into an error message");
