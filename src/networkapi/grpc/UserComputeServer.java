@@ -7,7 +7,7 @@ import conceptualapi.ComputeEngineAPI;
 import conceptualapi.ComputeEngineAPIImpl;
 
 import networkapi.UserComputeAPI;
-import networkapi.UserComputeAPIImpl;
+import networkapi.UserComputeAPIMultiThreadedImpl;
 
 import processapi.DataStorageAPI;
 import processapi.GrpcDataStorageAPI;
@@ -25,12 +25,15 @@ public class UserComputeServer {
         ComputeEngineAPI engine = new ComputeEngineAPIImpl();
 
         // ProcessAPI
-        DataStorageAPI storage = new GrpcDataStorageAPI(DATASTORE_HOST, DATASTORE_PORT);
+        DataStorageAPI storage =
+                new GrpcDataStorageAPI(DATASTORE_HOST, DATASTORE_PORT);
 
-        // controller / coordinator
-        UserComputeAPI api = new UserComputeAPIImpl(engine, storage);
+        //controller / coordinator
+        UserComputeAPI api =
+                new UserComputeAPIMultiThreadedImpl(engine, storage);
 
-        UserComputeGrpcServiceImpl service = new UserComputeGrpcServiceImpl(api);
+        UserComputeGrpcServiceImpl service =
+                new UserComputeGrpcServiceImpl(api);
 
         Server server = ServerBuilder
                 .forPort(PORT)
