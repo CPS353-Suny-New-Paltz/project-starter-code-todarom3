@@ -26,8 +26,19 @@ public class ComputeEngineAPIImpl implements ComputeEngineAPI {
             return new ComputeResult(Collections.emptyList(), 0);
         }
 
+        //CHECKPOINT 8 PERFORMANCE MEASUREMENT
+        long startTime = System.nanoTime();
+
         List<Integer> primes = computePrimeList(upperLimit);
         int totalCount = primes.size();
+
+        long endTime = System.nanoTime();
+        long elapsedMs = (endTime - startTime) / 1_000_000;
+
+        System.out.println(
+                "[SLOW ComputeEngineAPIImpl] computePrimes(" +
+                upperLimit + ") took " + elapsedMs + " ms"
+        );
 
         return new ComputeResult(primes, totalCount);
     }
