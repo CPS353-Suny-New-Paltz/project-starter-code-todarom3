@@ -43,6 +43,12 @@ public class UserComputeServer {
         System.out.println("UserCompute gRPC server starting on port " + PORT + "...");
         server.start();
         System.out.println("UserCompute gRPC server started.");
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Shutting down UserCompute gRPC server...");
+            server.shutdown();
+        }));
+
         server.awaitTermination();
     }
 }

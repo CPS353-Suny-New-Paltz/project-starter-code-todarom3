@@ -22,6 +22,12 @@ public class DataStoreServer {
         System.out.println("DataStore gRPC server starting on port " + PORT + "...");
         server.start();
         System.out.println("DataStore gRPC server started.");
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Shutting down DataStore gRPC server...");
+            server.shutdown();
+        }));
+
         server.awaitTermination();
     }
 }
