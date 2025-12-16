@@ -33,6 +33,9 @@ public class UserComputeAPIMultiThreadedImpl implements UserComputeAPI {
     @Override
     public UserResponse processUserRequest(UserRequest request) {
 
+    	//start request
+    	long startTime = System.nanoTime();
+
         // Basic validation 
         if (request == null) {
             return new UserResponse("Error: request cannot be null.");
@@ -93,8 +96,20 @@ public class UserComputeAPIMultiThreadedImpl implements UserComputeAPI {
                 return new UserResponse("Error: failed to write output.");
             }
 
+            //end request (working)
+            long endTime = System.nanoTime();
+            long durationMs = (endTime - startTime) / 1_000_000;
+            System.out.println("User request completed in " + durationMs + " ms");
+
             return new UserResponse("Computation completed successfully.");
+
         } catch (Exception e) {
+
+        	//end request (fail)
+        	long endTime = System.nanoTime();
+            long durationMs = (endTime - startTime) / 1_000_000;
+            System.out.println("User request failed after " + durationMs + " ms");
+
             // translate exceptions to a safe user response
             return new UserResponse("Error processing request: " + e.getMessage());
         }
