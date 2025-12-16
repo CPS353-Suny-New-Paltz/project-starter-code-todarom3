@@ -108,3 +108,9 @@ tasks.register('runClient', JavaExec) {
     mainClass = 'frontend.UserComputeClient'
     standardInput = System.in
 }
+
+tasks.register('printRuntimeClasspath') {
+    doLast {
+        println sourceSets.main.runtimeClasspath.asPath
+    }
+}
