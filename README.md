@@ -1,3 +1,13 @@
+(Final Project) Design Overview
+
+This system is structured as a layered architecture with API boundaries:
+- Conceptual API: Prime computation logic
+- Process API: Data storage and I/O
+- Network API: gRPC-based coordination layer
+
+Each layer is independently testable and replaceable, which enabled performance tuning and
+multi-threading.
+
 The system will compute the number of prime numbers less than or equal to the input number.
 
 Example - Input: N = 30
